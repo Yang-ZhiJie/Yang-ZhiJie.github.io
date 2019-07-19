@@ -198,5 +198,19 @@ cond(no)->op
 
   
 
+  #### 修改博客主题样式
   
+  1. 进入http://jekyllthemes.org/网站，挑选自己喜欢的主题样式
+  
+     点击下载，并解压。或者点击第四个选项进入该主题的远程库 复制该主题地址库，到终端输入git clone把主题文件拉到本地库
+  
+  2. 使用cd+主题文件名进入该 目录下 “ ll ”进行查看是否有.git文件，输入命令git init 初始化成能被git操作的库。
+  
+  3. 完成初始化库后 使用git remote -v查看该库的远程地址 有的话一般都是主题作者的远程库地址就使用命令删掉 没有的话使用git remote add origin +自己的远程库地址 回车完成操作 
+  
+  4. 使用git add .  git commit -m'' git push -u origin master 推到远程库  尝试在网页上输入github域名进行访问 ，显示博客样式及代表成功进行下一步操作。
+  
+  5. 将写好的Markdown日志的文件类型 修改为博客主题下 _ posts文件夹中.md格式 并使用终端将Markdown文件移至 _ posts文件夹中。
+  
+  6. 完成上述操作进行git提交至远程库中即可。 
 
