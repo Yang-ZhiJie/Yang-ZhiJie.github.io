@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>WebFunChat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--图标-->
+    <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
+
+    <!--布局框架-->
+    <link rel="stylesheet" type="text/css" href="./css/util.css">
+
+    <!--主要样式-->
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+
+<body>
+
+
+    <div class="login">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="./img/img-01.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form" id='form1' method="post" action="/login" onsubmit="return check()">
+                    <span class="login100-form-title">
+					用户登陆
+				</span>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="username" placeholder="账号">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="password" name="password" placeholder="密码">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+						<i class="fa fa-lock" aria-hidden="true"></i>
+					</span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <input name='codecheck' type='text' id="code" onblur="getcode()" placeholder="请输入验证码"><img src="http://192.168.28.13:3001/capt">
+                        <button class="login100-form-btn" type="submit" value="login">
+						登陆
+					</button>
+
+
+                    </div>
+
+                    <div class="text-center p-t-12">
+                        <a class="txt2" href="javascript:">
+						忘记密码？
+					</a>
+                    </div>
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" href="/register.html">
+							还没有账号？立即注册
+						<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+					</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        function getcode() {
+            // var username = document.getElementsByClassName('input100').value;
+            var code = document.getElementById('code').value;
+            if (code == '') {
+                alert('验证码不能为空')
+                return false;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var type = JSON.parse(xhr.responseText);
+                    // console.log(type);
+                    type = type.type;
+                    if (!type) {
+                        alert('验证码错误');
+                        return false;
+                    } else {
+                        // socket.emit('client', username);
+                        // console.log(username);
+                        return true;
+                    }
+                }
+
+            }
+
+            xhr.open('GET', '/test?code=' + code, true);
+            xhr.send();
+        }
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 13) {
+                return false;
+            }
+        }
+
+        function check() {
+            return false || getcode();
+        }
+    </script>
+
+</body>
+
+</html>

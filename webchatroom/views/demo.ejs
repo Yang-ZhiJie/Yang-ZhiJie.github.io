@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>聊天界面</title>
+    <link rel="stylesheet" href="css/demo.css">
+</head>
+<style>
+    #page {
+        margin: 0 auto;
+        width: 900px;
+        height: 700px;
+        background-color: black;
+    }
+    
+    .cebian {
+        height: 650px;
+        width: 300px;
+        /* background-color: red; */
+        position: relative;
+        margin: 20px;
+        float: left;
+    }
+    
+    .liaotiankuang {
+        float: left;
+        height: 650px;
+        width: 550px;
+        /* left: 200px; */
+        top: 20px;
+        position: relative;
+        background-color: #fff;
+    }
+    /* .shurukuang {
+        height: 180px;
+        width: 550px;
+        float: left;
+        background-color: blue;
+    } */
+    
+    #siliao {
+        width: 300px;
+        height: 445px;
+        border: 2px solid white;
+        margin-top: 20px;
+    }
+    
+    #siliao ul li {
+        list-style-type: none;
+        color: whitesmoke;
+        /* font-size:  */
+    }
+</style>
+
+<body>
+    <!-- 页面大框 -->
+    <div id="page">
+        <!-- 信息列表 -->
+        <div class="cebian">
+            <!-- 头像及名字 -->
+            <div class="touxiang"><img src="<%=newpath%>" id="touxiang1"></div>
+            <div class="txiangName">
+                <%= name %>
+                    <input type="hidden" id="username" value="<%= name %>">
+            </div>
+            <div>
+                <form action="/dopost" method="post" enctype="multipart/form-data">
+                    <input type="file" name="sexy_photo"><button>上传头像</button>
+                </form>
+            </div>
+            <!-- 功能列表 -->
+            <div class="apptype">
+                <ul>
+                    <li onclick="qunLiao()"><a href="./chat.html" target="liaotian">群聊</a></li>
+                    <li><a href="">私聊</a></li>
+                </ul>
+
+                <!-- <div><a href="">聊</a></div> -->
+            </div>
+            <div id="siliao">
+                <ul id="ul">
+
+                </ul>
+            </div>
+        </div>
+        <div class="liaotiankuang">
+            <!-- <video src="/img/IMG_9585.mp4" height="100%" width="100%"></video> -->
+            <iframe name="liaotian" style="width: 100%; height: 100%;"></iframe>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var username = document.getElementById('username').value;
+        var xname = '';
+        // console.log(username);
+        socket.emit('client', username);
+        socket.on('list', function(data) {
+            var ul = document.getElementById('ul');
+            ul.innerHTML = '';
+            // console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                ul.innerHTML = ul.innerHTML + `<li onclick="getname('${data[i]}')"><a href="./chat.html" target="liaotian">${data[i]}</a></li>`;
+            }
+        });
+
+        function getname(_this) {
+            socket.emit('chater', {
+                uname: _this,
+                lname: username
+            });
+        }
+
+        function qunLiao() {
+            socket.emit('qlist', 'qun');
+        }
+    </script>
+</body>
+
+</html>
