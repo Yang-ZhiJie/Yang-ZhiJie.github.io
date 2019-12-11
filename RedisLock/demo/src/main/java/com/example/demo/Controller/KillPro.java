@@ -118,7 +118,7 @@ public class KillPro  implements CommandLineRunner {
                             order1.setOrderId(UUID.randomUUID().toString());
                             if (order1 != null) {
                                 orderMapper.insertOrder(order);
-//                            orderMapper.updateSku(2);
+                                orderMapper.updateSku(2);
                             }
                         }
                     }
